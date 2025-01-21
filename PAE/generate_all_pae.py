@@ -17,7 +17,7 @@ def parse_args():
 
 
 def generate_mega_PAE(path, server=True,):
-
+    
     if server==True:
         workingpath = path+"/predictions" 
         outputgraph = "./plots/all_PAE.png"
@@ -30,11 +30,14 @@ def generate_mega_PAE(path, server=True,):
     os.chdir(workingpath)
     curdir = os.getcwd()
 
-    models = [f for f in os.listdir() if os.path.isdir(f)]
+    a3m = glob("*.a3m")
+    
+    # models = [f for f in os.listdir() if os.path.isdir(f)]
     if server != True:
         #clean "_env" and "_pairgreedy"  for each model and keep only unique names
-        models = list(set([model.split("_env")[0] for model in models]))
-        models = list(set([model.split("_pairgreedy")[0] for model in models]))
+        #models = list(set([model.split("_env")[0] for model in models]))
+        #models = list(set([model.split("_pairgreedy")[0] for model in models]))
+        models = models = [f.split(".a3m")[0] for f in a3m]
 
 
     for model in models:        
@@ -126,6 +129,7 @@ def generate_mega_PAE(path, server=True,):
         # Adjust the layout and display the plot
         #plt.tight_layout()
         plt.savefig(outputgraph, dpi=300)
+        print(f"Output graph saved in {outputgraph}")
 
         #Come back to previous directory to change mode (if any)
         os.chdir(curdir)
@@ -140,4 +144,4 @@ if __name__ == "__main__":
     folder = os.path.abspath(folder)
     server = args.server
     generate_mega_PAE(folder, server)
-    print(f"Output graph saved in plots/all_PAE.png")
+    
